@@ -1,0 +1,12 @@
+{
+  "layer": 8,
+  "K": 200,
+  "nctx": 8,
+  "causal_linear_real_r2": 0.0027179445511354983,
+  "causal_spectrum_null_r2": 0.0023705519115026718,
+  "causal_spectrum_null_sd": 0.0010624525699208446,
+  "causal_delta_r2_spectrum": 0.0003473926396328265,
+  "direct_real_r2": 0.005979398717634643,
+  "direct_spectrum_null_r2": 0.03801704609153338,
+  "direct_delta_r2_spectrum": -0.032037647373898734
+}

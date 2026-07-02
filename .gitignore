@@ -1,0 +1,10 @@
+# large regenerable arrays (over GitHub's 100MB limit)
+*.npy
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+
+# os
+.DS_Store

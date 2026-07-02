@@ -1,0 +1,131 @@
+{
+  "hook": "blocks.5.hook_resid_pre",
+  "k": 3000,
+  "rot": 5,
+  "real_r2": 0.0052,
+  "null_r2_mean": 0.0294,
+  "null_r2_sd": 0.0064,
+  "delta_r2": -0.0242,
+  "bins": [
+    {
+      "sgeo": -0.55,
+      "n": 9,
+      "real_sfn": 0.0343,
+      "null_sfn": -0.3265,
+      "null_sd": 0.054,
+      "delta": 0.3609
+    },
+    {
+      "sgeo": -0.45,
+      "n": 277,
+      "real_sfn": -0.0997,
+      "null_sfn": -0.1699,
+      "null_sd": 0.0103,
+      "delta": 0.0702
+    },
+    {
+      "sgeo": -0.35,
+      "n": 1530,
+      "real_sfn": -0.0093,
+      "null_sfn": -0.0903,
+      "null_sd": 0.0138,
+      "delta": 0.081
+    },
+    {
+      "sgeo": -0.25,
+      "n": 2811,
+      "real_sfn": -0.0417,
+      "null_sfn": -0.0866,
+      "null_sd": 0.0196,
+      "delta": 0.045
+    },
+    {
+      "sgeo": -0.15,
+      "n": 47421,
+      "real_sfn": -0.1045,
+      "null_sfn": -0.1173,
+      "null_sd": 0.0035,
+      "delta": 0.0128
+    },
+    {
+      "sgeo": -0.05,
+      "n": 1986456,
+      "real_sfn": -0.0312,
+      "null_sfn": -0.0349,
+      "null_sd": 0.002,
+      "delta": 0.0038
+    },
+    {
+      "sgeo": 0.05,
+      "n": 2169739,
+      "real_sfn": 0.0243,
+      "null_sfn": 0.0276,
+      "null_sd": 0.0015,
+      "delta": -0.0034
+    },
+    {
+      "sgeo": 0.15,
+      "n": 250336,
+      "real_sfn": 0.1087,
+      "null_sfn": 0.1215,
+      "null_sd": 0.0048,
+      "delta": -0.0128
+    },
+    {
+      "sgeo": 0.25,
+      "n": 30615,
+      "real_sfn": 0.1962,
+      "null_sfn": 0.2186,
+      "null_sd": 0.0061,
+      "delta": -0.0224
+    },
+    {
+      "sgeo": 0.35,
+      "n": 6372,
+      "real_sfn": 0.2531,
+      "null_sfn": 0.2741,
+      "null_sd": 0.0048,
+      "delta": -0.021
+    },
+    {
+      "sgeo": 0.45,
+      "n": 2007,
+      "real_sfn": 0.2633,
+      "null_sfn": 0.3232,
+      "null_sd": 0.0054,
+      "delta": -0.0599
+    },
+    {
+      "sgeo": 0.55,
+      "n": 647,
+      "real_sfn": 0.4175,
+      "null_sfn": 0.456,
+      "null_sd": 0.0124,
+      "delta": -0.0385
+    },
+    {
+      "sgeo": 0.65,
+      "n": 200,
+      "real_sfn": 0.5813,
+      "null_sfn": 0.6022,
+      "null_sd": 0.0146,
+      "delta": -0.0209
+    },
+    {
+      "sgeo": 0.75,
+      "n": 69,
+      "real_sfn": 0.6992,
+      "null_sfn": 0.7164,
+      "null_sd": 0.015,
+      "delta": -0.0172
+    },
+    {
+      "sgeo": 0.85,
+      "n": 11,
+      "real_sfn": 0.8539,
+      "null_sfn": 0.8152,
+      "null_sd": 0.0205,
+      "delta": 0.0386
+    }
+  ]
+}

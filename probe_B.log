@@ -1,0 +1,56 @@
+/Users/oe/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+basis 0
+basis 128
+basis 256
+basis 384
+basis 512
+basis 640
+/Users/oe/feature-geometry-locality/probe_B.py:39: RuntimeWarning: divide by zero encountered in matmul
+  Sgeo=Dn@Dn.T; sgeo=Sgeo[iu]
+/Users/oe/feature-geometry-locality/probe_B.py:39: RuntimeWarning: overflow encountered in matmul
+  Sgeo=Dn@Dn.T; sgeo=Sgeo[iu]
+/Users/oe/feature-geometry-locality/probe_B.py:39: RuntimeWarning: invalid value encountered in matmul
+  Sgeo=Dn@Dn.T; sgeo=Sgeo[iu]
+/Users/oe/feature-geometry-locality/probe_B.py:44: RuntimeWarning: divide by zero encountered in matmul
+  F_lin=D@Jt                      # (K,V)
+/Users/oe/feature-geometry-locality/probe_B.py:44: RuntimeWarning: overflow encountered in matmul
+  F_lin=D@Jt                      # (K,V)
+/Users/oe/feature-geometry-locality/probe_B.py:44: RuntimeWarning: invalid value encountered in matmul
+  F_lin=D@Jt                      # (K,V)
+/Users/oe/feature-geometry-locality/probe_B.py:49: RuntimeWarning: divide by zero encountered in matmul
+  M=Jt@Jt.T
+/Users/oe/feature-geometry-locality/probe_B.py:49: RuntimeWarning: overflow encountered in matmul
+  M=Jt@Jt.T
+/Users/oe/feature-geometry-locality/probe_B.py:49: RuntimeWarning: invalid value encountered in matmul
+  M=Jt@Jt.T
+/Users/oe/feature-geometry-locality/probe_B.py:60: RuntimeWarning: divide by zero encountered in matmul
+  Mr=(Q*evals)@Q.T
+/Users/oe/feature-geometry-locality/probe_B.py:60: RuntimeWarning: overflow encountered in matmul
+  Mr=(Q*evals)@Q.T
+/Users/oe/feature-geometry-locality/probe_B.py:60: RuntimeWarning: invalid value encountered in matmul
+  Mr=(Q*evals)@Q.T
+/Users/oe/feature-geometry-locality/probe_B.py:70: RuntimeWarning: divide by zero encountered in matmul
+  Mwte=wte.astype(np.float64).T@wte.astype(np.float64)
+/Users/oe/feature-geometry-locality/probe_B.py:70: RuntimeWarning: overflow encountered in matmul
+  Mwte=wte.astype(np.float64).T@wte.astype(np.float64)
+/Users/oe/feature-geometry-locality/probe_B.py:70: RuntimeWarning: invalid value encountered in matmul
+  Mwte=wte.astype(np.float64).T@wte.astype(np.float64)
+/Users/oe/feature-geometry-locality/probe_B.py:76: RuntimeWarning: divide by zero encountered in matmul
+  dnull.append(r2(cum(y,(Q*ew)@Q.T)[iu]))
+/Users/oe/feature-geometry-locality/probe_B.py:76: RuntimeWarning: overflow encountered in matmul
+  dnull.append(r2(cum(y,(Q*ew)@Q.T)[iu]))
+/Users/oe/feature-geometry-locality/probe_B.py:76: RuntimeWarning: invalid value encountered in matmul
+  dnull.append(r2(cum(y,(Q*ew)@Q.T)[iu]))
+saved Jt_L8_c8.npy
+corr(cos F_lin, cos under M): 1.0
+
+=== SPECTRUM-MATCHED NULL on linearized causal map (L8) ===
+real_r2(linear causal) = 0.0027
+spectrum_null_r2       = 0.0024 +/- 0.0011
+delta_r2_spectrum      = 0.0003  z=0.33
+
+=== DIRECT proxy (wte) same subset for reference ===
+real_r2(direct)=0.0060 spectrum_null=0.0380+/-0.0064 delta=-0.0320
+
+wrote probe_B_out.json

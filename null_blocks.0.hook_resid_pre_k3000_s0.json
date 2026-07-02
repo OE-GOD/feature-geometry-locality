@@ -1,0 +1,171 @@
+{
+  "hook": "blocks.0.hook_resid_pre",
+  "k": 3000,
+  "rot": 5,
+  "real_r2": 0.3145,
+  "null_r2_mean": 0.0394,
+  "null_r2_sd": 0.0045,
+  "delta_r2": 0.2751,
+  "bins": [
+    {
+      "sgeo": -0.95,
+      "n": 1,
+      "real_sfn": -0.9947,
+      "null_sfn": -0.9538,
+      "null_sd": 0.0099,
+      "delta": -0.0409
+    },
+    {
+      "sgeo": -0.85,
+      "n": 4,
+      "real_sfn": -0.9794,
+      "null_sfn": -0.8476,
+      "null_sd": 0.0301,
+      "delta": -0.1318
+    },
+    {
+      "sgeo": -0.75,
+      "n": 5,
+      "real_sfn": -0.9846,
+      "null_sfn": -0.7404,
+      "null_sd": 0.0238,
+      "delta": -0.2442
+    },
+    {
+      "sgeo": -0.65,
+      "n": 6,
+      "real_sfn": -0.9785,
+      "null_sfn": -0.6468,
+      "null_sd": 0.0287,
+      "delta": -0.3317
+    },
+    {
+      "sgeo": -0.55,
+      "n": 9,
+      "real_sfn": -0.977,
+      "null_sfn": -0.6257,
+      "null_sd": 0.0225,
+      "delta": -0.3513
+    },
+    {
+      "sgeo": -0.45,
+      "n": 10,
+      "real_sfn": -0.9721,
+      "null_sfn": -0.6602,
+      "null_sd": 0.0113,
+      "delta": -0.3119
+    },
+    {
+      "sgeo": -0.35,
+      "n": 41,
+      "real_sfn": -0.5213,
+      "null_sfn": -0.6007,
+      "null_sd": 0.0237,
+      "delta": 0.0794
+    },
+    {
+      "sgeo": -0.25,
+      "n": 308,
+      "real_sfn": -0.7271,
+      "null_sfn": -0.1872,
+      "null_sd": 0.0255,
+      "delta": -0.54
+    },
+    {
+      "sgeo": -0.15,
+      "n": 21022,
+      "real_sfn": -0.4225,
+      "null_sfn": -0.067,
+      "null_sd": 0.0066,
+      "delta": -0.3555
+    },
+    {
+      "sgeo": -0.05,
+      "n": 860724,
+      "real_sfn": -0.0048,
+      "null_sfn": -0.0299,
+      "null_sd": 0.0014,
+      "delta": 0.0251
+    },
+    {
+      "sgeo": 0.05,
+      "n": 2572863,
+      "real_sfn": 0.3929,
+      "null_sfn": 0.0193,
+      "null_sd": 0.0076,
+      "delta": 0.3737
+    },
+    {
+      "sgeo": 0.15,
+      "n": 986035,
+      "real_sfn": 0.6594,
+      "null_sfn": 0.0843,
+      "null_sd": 0.0124,
+      "delta": 0.5751
+    },
+    {
+      "sgeo": 0.25,
+      "n": 52783,
+      "real_sfn": 0.757,
+      "null_sfn": 0.2013,
+      "null_sd": 0.0099,
+      "delta": 0.5557
+    },
+    {
+      "sgeo": 0.35,
+      "n": 3751,
+      "real_sfn": 0.7854,
+      "null_sfn": 0.3416,
+      "null_sd": 0.0094,
+      "delta": 0.4438
+    },
+    {
+      "sgeo": 0.45,
+      "n": 650,
+      "real_sfn": 0.7914,
+      "null_sfn": 0.4541,
+      "null_sd": 0.006,
+      "delta": 0.3374
+    },
+    {
+      "sgeo": 0.55,
+      "n": 185,
+      "real_sfn": 0.7758,
+      "null_sfn": 0.5407,
+      "null_sd": 0.0204,
+      "delta": 0.2351
+    },
+    {
+      "sgeo": 0.65,
+      "n": 65,
+      "real_sfn": 0.7679,
+      "null_sfn": 0.5969,
+      "null_sd": 0.0162,
+      "delta": 0.171
+    },
+    {
+      "sgeo": 0.75,
+      "n": 20,
+      "real_sfn": 0.6784,
+      "null_sfn": 0.6298,
+      "null_sd": 0.0162,
+      "delta": 0.0486
+    },
+    {
+      "sgeo": 0.85,
+      "n": 2,
+      "real_sfn": 0.9123,
+      "null_sfn": 0.5159,
+      "null_sd": 0.0242,
+      "delta": 0.3964
+    },
+    {
+      "sgeo": 0.95,
+      "n": 16,
+      "real_sfn": 0.9515,
+      "null_sfn": 0.8949,
+      "null_sd": 0.015,
+      "delta": 0.0566
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "label": "blocks.9.hook_resid_pre",
+  "seed": 0,
+  "n": 4000,
+  "ranks": [
+    {
+      "k": 1,
+      "mean_sfn": 0.4027,
+      "sem_sfn": 0.0086,
+      "mean_sgeo": 0.4285
+    },
+    {
+      "k": 2,
+      "mean_sfn": 0.3702,
+      "sem_sfn": 0.0088,
+      "mean_sgeo": 0.3692
+    },
+    {
+      "k": 4,
+      "mean_sfn": 0.3232,
+      "sem_sfn": 0.009,
+      "mean_sgeo": 0.3165
+    },
+    {
+      "k": 8,
+      "mean_sfn": 0.2884,
+      "sem_sfn": 0.0091,
+      "mean_sgeo": 0.2668
+    },
+    {
+      "k": 16,
+      "mean_sfn": 0.2321,
+      "sem_sfn": 0.0093,
+      "mean_sgeo": 0.2205
+    },
+    {
+      "k": 32,
+      "mean_sfn": 0.1857,
+      "sem_sfn": 0.0094,
+      "mean_sgeo": 0.1781
+    },
+    {
+      "k": 64,
+      "mean_sfn": 0.1538,
+      "sem_sfn": 0.0094,
+      "mean_sgeo": 0.1408
+    },
+    {
+      "k": 128,
+      "mean_sfn": 0.1258,
+      "sem_sfn": 0.0095,
+      "mean_sgeo": 0.1076
+    },
+    {
+      "k": 256,
+      "mean_sfn": 0.1007,
+      "sem_sfn": 0.0096,
+      "mean_sgeo": 0.0789
+    }
+  ],
+  "baseline_sfn": 0.0008,
+  "antipode": {
+    "mean_sfn": -0.1476,
+    "sem_sfn": 0.0097,
+    "mean_sgeo": -0.184,
+    "frac_sfn_below_-0.2": 0.5092
+  }
+}
