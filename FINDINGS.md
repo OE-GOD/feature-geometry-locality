@@ -32,7 +32,7 @@ similarity `Sgeo = cos(decoder_i, decoder_j)` predict functional similarity
    norm) the model responds *linearly*: `F ~ alpha*J*d`, verified by
    `corr(cos F, cos under M=J^T J) = 1.0000`. So the same spectrum tautology
    applies. Against the correct spectrum-matched null, `delta_R2` drops from
-   0.0024 (z=13) to 0.0003 (**z=0.33, n.s.**). The label-permutation null is
+   0.0024 (z=12) to 0.0003 (**z=0.33, n.s.**). The label-permutation null is
    strictly too weak: it is beaten by *any* fixed linear map, so beating it is
    not evidence of network-specific structure.
 
