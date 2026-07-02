@@ -66,15 +66,61 @@ the network organizes features. The local-vs-global question is *not* answered
 - Computational-match principle made concrete: an over-expressive / mis-nulled
   instrument manufactures structure the network does not have.
 
-## What remains genuinely open (needs a pod / real activations)
+## The nonlinear on-distribution frontier — now tested, also negative
 
-The only untested regime is a *genuinely nonlinear, on-distribution* function
-proxy — e.g. run the SAE encoder over a real corpus, find where each feature
-actually fires, and measure its true downstream causal effect on model outputs
-(not a small tangent-space perturbation). If any layer's `delta_R2` beats the
-matched null there, that is a real, publishable local-structure result. Current
-evidence (signal flat-then-decreasing with injection scale) predicts it will
-not, but it has not been tested and is the honest frontier.
+The one untested regime was a *genuinely nonlinear, on-distribution* proxy: run
+the SAE encoder over a real corpus, find where each feature actually fires,
+ablate its real contribution, and measure the true downstream logit shift (not a
+tangent-space perturbation). Built in `real_effect.py` + `nlcp_compare.py`.
+
+**Result: negative, robustly.** The real ablation-effect matrix is again ~99.5%
+one shared axis. The decisive test uses the LINEAR direct-logit proxy as a
+built-in negative control (it is a proven spectrum artifact). Only the
+un-deflated comparison passes that control (the deflated levels flag the linear
+artifact too, z_LIN=27–76, so they have no discriminating power). At the
+trustworthy level, the real nonlinear coupling is *below* the null under two
+independent nulls (spectrum-matched and rank-matched), z_REAL ≈ −6 to −7. So SAE
+geometry carries no network-specific functional structure even when we measure
+what features actually do when they fire.
+
+Added methodological lessons: (a) deflation is treacherous when the unembedding
+spectrum is concentrated — it can manufacture above-null coupling for a *known*
+artifact; (b) a refuted linear proxy makes a decisive built-in control, sharper
+than synthetic ground-truth worlds. See `specs/nonlinear-causal-proxy/`.
+
+**Robust across depth.** Depth sweep (layers 2/4/8/11, deflate-0, both nulls):
+the coupling gets monotonically MORE negative with depth (z_REAL: layer 4 ≈ −6,
+layer 8 ≈ −6/−7, layer 11 ≈ −24/−37). The only non-negative point is layer 2,
+and it is null-dependent (rank-matched +4.3, spectrum-map −3.9, borderline
+control) — it fails the "beat both nulls" bar and is most parsimoniously the
+fading tail of residual EMBEDDING geometry (layer 0 was the one trivially
+positive layer). So SAE feature geometry carries no network-specific functional
+structure at any mid/late layer, increasingly so with depth; the only geometric
+structure is the trivial embedding geometry at the earliest layers, gone by layer 4.
+
+**Why every proxy is ~99.5% one shared axis (characterized).** That dominant
+component equals the mean ablation effect (cos=1.000, 94% of features same-sign);
+it promotes GPT-2 glitch tokens (RandomRedditor, rawdownload, byte/control chars)
+and demotes common punctuation/whitespace. It is a generic confidence-collapse /
+residual-mass-removal direction — ablating ANY feature flattens the output
+distribution toward degenerate tokens. It measures how much mass was removed, not
+what the feature means, which is why it swamps the feature-specific signal.
+
+**A non-ablation proxy agrees (`cofire.py`).** To sidestep the ablation
+confound entirely, define function by CO-FIRING: two features are related if they
+activate in the same contexts (SAE encoder over 8000 real Pile positions, no
+ablation). Result: decoder geometry predicts co-firing essentially not at all —
+coupling R²≈0.003, below the rank-matched null (z≈−16) at every deflation. And
+co-firing has its OWN ~99.98% shared axis (a generic activity-level mode), so the
+single-dominant-shared-mode phenomenon is pervasive across SAE feature statistics,
+not specific to ablation. So whether function is a feature's output EFFECT or WHEN
+it fires, decoder geometry does not predict it.
+
+The genuinely-open remainder is now narrow: other SAE families/architectures;
+non-cosine or hierarchical geometry measures; and function proxies for the
+sub-dominant (post-shared-axis) structure that come with a validated null (the
+shared axis is pervasive, so any such proxy needs the deflation controls from
+`nlcp_validate.py` / the built-in linear control).
 
 ## Reproduce
 
@@ -82,6 +128,8 @@ not, but it has not been tested and is the honest frontier.
 python3 validate.py                                  # metric sanity on synthetic worlds
 python3 run_layer.py --hook blocks.8.hook_resid_pre  # direct proxy (naive)
 python3 null_control.py --hook blocks.8.hook_resid_pre  # spectrum null -> negative delta
-python3 causal_proxy.py --layer 8 --k 200            # causal proxy vs permutation null
-python3 decisive_test.py                             # deflated signal vs spectrum null
+python3 decisive_test.py                             # linear deflated signal vs spectrum null
+python3 real_effect.py --k 200 --contexts 24         # nonlinear on-distribution ablation effects
+python3 nlcp_validate.py                             # synthetic validation of the metric
+python3 nlcp_compare.py                              # nonlinear vs null, w/ linear-proxy control
 ```

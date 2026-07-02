@@ -1,0 +1,28 @@
+<task>
+MARKER: NLCP-SLICE1-REALEFFECT
+Repo: /Users/oe/feature-geometry-locality (Python 3.9, numpy, torch, transformers, safetensors; CPU only). Read SPEC.md at specs/nonlinear-causal-proxy/SPEC.md for context. Reuse existing code — do NOT reinvent: run_layer.py (fetch(), load_np(), SAE_REPO/GPT2_REPO paths, DEAD_LOG_SPARSITY) and causal_proxy.py (GPT-2 loading + forward-hook pattern + build_contexts).
+
+Create ONE new file `real_effect.py` that measures each SAE feature's REAL, on-distribution ablation effect on GPT-2-small output logits, for the jbloom SAE at a residual hook (default blocks.8.hook_resid_pre).
+
+Mechanism:
+1. Load SAE weights W_dec (24576,768), W_enc (768,24576), b_enc (24576,), b_dec (768,) from the same sae_weights.safetensors run_layer.fetch uses (extend the loader). Load GPT2LMHeadModel + tokenizer (as causal_proxy.py does). Build a small diverse corpus of token windows (reuse/extend causal_proxy.build_contexts; ~48 windows, seqlen 32).
+2. SAE encoder for a residual vector h (d_model): a = relu((h - b_dec) @ W_enc + b_enc)  -> (24576,) feature activations. Reconstruction: recon = a @ W_dec + b_dec.
+3. Register a forward_pre_hook on model.transformer.h[LAYER] (its input == blocks.LAYER.hook_resid_pre). Baseline pass (no ablation): record clean logits AND the per-position residual h for every (context,position); from h compute feature activations a for the K target features.
+4. Target features: alive features (log_sparsity > DEAD_LOG_SPARSITY), subsample K=200 with numpy default_rng(seed). A feature "fires" at a position if a_i > 0. Keep per-feature list of firing positions.
+5. For each target feature i: one forward pass where the hook SUBTRACTS a_i(pos)*W_dec[i] from h at exactly that feature's firing positions (leave other positions unchanged); collect ablated logits. effect at a firing position = clean_logits[pos] - ablated_logits[pos] (the vocab-length next-token logit vector at that position). F_i = mean of that over the feature's firing positions. Reduce to the (vocab,) mean vector in float32 BEFORE any float64 cast (avoid materializing doubled (batch,seq,vocab) tensors — this was a real 4x slowdown before).
+6. Features that fire at fewer than MIN_FIRES (default 5) positions: set F_i to zeros and record the low count (don't crash).
+</task>
+
+<output_contract>
+`real_effect.py` CLI: --layer (default 8) --k (default 200) --contexts (default 48) --seq (default 32) --seed (default 0) --min-fires (default 5) --out (default real_effect_L{layer}_k{k}_s{seed}.npz).
+Writes an .npz with: F (K x vocab float32), idx (K int), firing_counts (K int).
+Prints, to stdout: reconstruction sanity = mean cos(h, recon) over a sample of positions (should be roughly >=0.9 for a healthy SAE — if it's low your encoder formula is wrong, fix it); number of features with firing_count >= min-fires; mean/median firing count; and mean L2 norm of the nonzero F_i rows.
+</output_contract>
+
+<verification_loop>
+Before finalizing: actually run `python3 real_effect.py --k 40 --contexts 16` (small, fast). Confirm it writes the npz, reconstruction cosine is reasonable (>=0.85), most sampled features fire and get nonzero F, and no crash. If reconstruction cosine is low or F is all zeros, the encoder or hook indexing is wrong — fix and re-run before declaring done. Python stderr warnings (urllib3/LibreSSL, torch) are expected noise, not failures.
+</verification_loop>
+
+<action_safety>
+Create ONLY real_effect.py and its .npz output (plus nothing else). Do NOT modify run_layer.py, causal_proxy.py, or any other existing file. Do NOT git commit. CPU only; keep it Python 3.9 compatible. Keep the diff tightly scoped — no drive-by refactors.
+</action_safety>

@@ -8,3 +8,7 @@ __pycache__/
 
 # os
 .DS_Store
+
+# regenerable data artifacts
+*.npz
+*.log

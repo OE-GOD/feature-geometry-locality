@@ -1,195 +1,171 @@
-# A random matrix debunked my SAE-geometry result. Three times.
+# A random matrix debunked my SAE-geometry result. Every time.
 
-*How trying to answer an open problem in mechanistic interpretability turned into
-a lesson about the null you're not using.*
+*Trying to answer an open problem in mechanistic interpretability turned into a
+lesson about the null you're not using — and, five proxies later, a genuinely
+robust negative with a mechanism attached.*
 
 ## The question
 
 Sparse autoencoders (SAEs) decompose a network's activations into a big
-dictionary of directions, and we call each direction a "feature." One of the
-open problems Sharkey et al. raise in *Open Problems in Mechanistic
-Interpretability* (2025, §2.1.2c) is that this decomposition **leaves feature
-geometry unexplained**. Treating features as an unordered "bag of directions" is
-only fair if their *arrangement* carries no information. But if the position of
-one feature relative to others encodes how the network treats them, then a list
-of single directions is missing something.
+dictionary of directions, and we call each direction a "feature." One of the open
+problems Sharkey et al. raise in *Open Problems in Mechanistic Interpretability*
+(2025, §2.1.2c) is that this decomposition **leaves feature geometry
+unexplained**. Treating features as an unordered "bag of directions" is only fair
+if their *arrangement* carries no information. But if the position of one feature
+relative to others encodes how the network treats them, a list of single
+directions is missing something.
 
-They frame it as a fork:
-
-- If only **local** geometry matters (a feature's role is set by its nearest
-  neighbours), the bag-of-features picture survives and interpretability stays
-  tractable.
-- If **global**, all-to-all geometry matters, single-direction SAEs may be the
-  wrong kind of object entirely.
-
-I wanted to measure which. I picked GPT-2-small and the well-known jbloom
-residual-stream SAEs (~24k features per layer), and I set up what looked like a
-clean test.
+They frame it as a fork: if only **local** geometry matters (a feature's role is
+set by its nearest neighbours), the bag-of-features picture survives; if **global**
+all-to-all geometry matters, single-direction SAEs may be the wrong object. I
+wanted to measure which, on GPT-2-small and the well-known jbloom residual-stream
+SAEs (~24k features per layer). It turned into five attempts to define "function,"
+and a random matrix that killed each one.
 
 ## The metric
 
-For every pair of features *i, j*, compute two cosine similarities:
-
-- **Sgeo** = cosine of their decoder directions — how geometrically close they are.
-- **Sfn** = cosine of their *function vectors* — how similarly the model uses them.
-
-Then ask: **does high Sgeo predict high Sfn?** And crucially, *where* along the
-Sgeo axis does the agreement live — in near pairs (local) or far/antipodal pairs
-(global)?
-
-The whole thing hinges on that word "function." My first choice was the standard
-one.
+For every pair of features *i, j*, compute two cosine similarities: **Sgeo**
+(cosine of their decoder directions — how geometrically close) and **Sfn** (cosine
+of their *function vectors* — how similarly the model uses them). Then ask: **does
+high Sgeo predict high Sfn?** Everything hinges on that word "function."
 
 ## Round 1: the direct-logit proxy, and a beautiful halo
 
-The cheapest proxy for "what a feature does" is its **direct logit effect**: push
-the decoder direction through the unembedding and see which tokens it promotes.
-Two features that promote the same tokens are doing the same job.
-
-I ran it across all 13 hook points. And there it was: a clean, monotone **halo**.
-Geometrically-close features were functionally similar; the mean Sfn rose
-smoothly from ~0 for orthogonal pairs to ~0.9 for near-parallel ones. It looked
-like good news for the bag-of-features picture — local structure, tractable.
-
-Then I ran an adversarial check that I should have run first.
+The cheapest proxy: a feature's **direct logit effect** — push the decoder
+direction through the unembedding, see which tokens it promotes. I ran it across
+all 13 hook points, and there it was — a clean, monotone **halo**: Sfn rose
+smoothly with Sgeo, from ~0 for orthogonal pairs to ~0.9 for near-parallel ones.
+Good news for bag-of-features. Then I ran the check I should have run first.
 
 ## The refutation: a spectrum-matched null
 
-Here's the problem. The direct-logit proxy is **linear** in the decoder
-direction: `F = W_U · d`. So Sfn is nothing but cosine of *d* under a fixed
-quadratic form `M = W_Uᵀ W_U`, while Sgeo is cosine under the identity. (More
-precisely M also folds in the fixed final-LayerNorm centering and gain, but those
-are held constant in the null below, so nothing hinges on the simplification.)
-Comparing two quadratic forms **mechanically** produces a monotone halo — for
-*any* map with the unembedding's singular spectrum.
+The direct-logit proxy is **linear** in the decoder direction: `F = W_U · d`. So
+Sfn is just cosine of *d* under a fixed quadratic form `M = W_Uᵀ W_U`, while Sgeo
+is cosine under the identity. Comparing two quadratic forms *mechanically*
+produces a monotone halo — for **any** map with the unembedding's singular
+spectrum. So I replaced the real unembedding with a **spectrum-matched random**
+one (same singular values, random singular vectors) and recomputed.
 
-So I built the control: replace the real unembedding with a **spectrum-matched
-random** one — same singular values, random singular vectors — and recompute the
-halo. If the halo is about GPT-2, the random matrix shouldn't reproduce it.
-
-It reproduced it bin-for-bin. Worse: measured as `delta_R2 = real_R2 − null_R2`,
-the real map was *weaker* than random at every layer except layer 0:
-
-| layer | real R² | null R² | delta |
-|-------|--------:|--------:|------:|
-| 0 (embedding) | 0.315 | 0.039 | **+0.275** |
-| 1–10 (mid)    | 0.005–0.014 | 0.029–0.049 | **−0.02 … −0.04** |
-| 11 (output)   | 0.268 | 0.396 | **−0.129** |
-
-The only positive-delta layer is layer 0 — which is trivially the token
-embeddings aligning with the unembedding. Everywhere else, my "local structure"
-was an artifact of the proxy's spectrum. The halo said nothing about the network.
+It reproduced the halo bin-for-bin. Measured as `delta_R2 = real − null`, the real
+map was *weaker* than random at every layer except layer 0 (which is trivially the
+token embeddings): mid-layers sat at delta ≈ −0.02 to −0.04. The "local structure"
+was an artifact of the proxy's spectrum.
 
 ## Round 2: the causal proxy, and z = 200
 
-The obvious fix: use a proxy that isn't a linear function of the decoder
-direction. So I built a **causal** one. Inject `α · dᵢ` into the residual stream
-at the feature's own layer, run the *rest* of GPT-2, and record the mean shift in
-output logits over a set of real contexts. This passes through downstream
-attention and MLPs — nonlinear, downstream-aware. Surely the spectrum argument
-dies here.
+Fix: use a proxy that isn't linear in the decoder direction. Inject `α · dᵢ` into
+the residual stream at the feature's layer, run the *rest* of GPT-2, record the
+mean output-logit shift. Against a **label-permutation null**, the signal was
+positive at every layer, up to **z ≈ 202** at the output, robust across injection
+scale and context. I was ready to believe it.
 
-It looked spectacular. Against a **label-permutation null** (shuffle which
-causal-effect vector belongs to which decoder direction), the signal was positive
-at every real layer, from z ≈ 12 at layer 8 up to **z ≈ 202** at the output. It
-was robust across injection scale (α = 2, 6, 12), across different context sets,
-across last-position vs mean readout. And there was a lovely internal sanity
-check: at layer 0, injecting into the embedding does the same generic thing to
-every feature (baseline Sfn = 0.96), and the metric correctly reported *no*
-feature-specific structure there.
+Two problems. First, at realistic injection scale (α = 2–12 is a ~2–11%
+perturbation of the residual), the model responds **almost linearly** — the cosine
+structure of the measured effects correlates 0.96–0.89 with a linear-Jacobian
+prediction. Same kind of object as Round 1. Second, and this is the lesson: the
+**label-permutation null is strictly too weak** — *any* fixed linear map beats it,
+so beating it proves nothing. Against the correct spectrum-matched null, the
+signal collapsed from z ≈ 12 to **z = 0.33**. Dead.
 
-I was ready to believe it. So I sent it to the skeptics.
+## Round 3: the last (linear) door
 
-## The refutation: the null was too weak
-
-Two things came back, and they were devastating in the precise way good reviews
-are.
-
-First: **at realistic injection scale, the causal proxy is essentially linear.**
-A typical token's residual stream at layer 8 has norm ~105 (the *mean*, ~198, is
-inflated by a few outlier positions), and the decoder directions are unit-norm,
-so α = 2–12 is only a ~2–11% perturbation. In that regime the model responds
-almost linearly: `F ≈ α · J · d` for the local Jacobian J. Measuring it directly,
-the cosine structure of the *actual forward-pass* effects correlates **0.96** with
-the linear-J prediction at α = 2 and **0.89** at α = 6 (it only drops to 0.71 once
-you push to α = 12). So at realistic scale it's the same kind of object as the
-direct-logit proxy — a linear map, just with J instead of the unembedding.
-
-Second, and this is the real lesson: **the label-permutation null is strictly too
-weak.** *Any* fixed linear map preserves the geometry→function structure that a
-label shuffle destroys. So beating the permutation null proves nothing about the
-network — a spectrum-matched random linear map beats it too.
-
-When I scored the causal proxy against the *correct* spectrum-matched null (built
-from the causal Jacobian), the signal collapsed: `delta_R2` fell from 0.0024
-(z ≈ 12) to **0.0003 (z = 0.33)** — indistinguishable from zero. The celebrated
-"sign flip from the direct proxy" was an artifact of comparing against a weaker
-baseline. Against the right null, both proxies are dead.
-
-## Round 3: the last open door
-
-There was one thing left. A skeptic noticed that ~98% of the variance in the
-causal-effect matrix lives in a *single* shared "logit-shift" axis — a common
-component that all features push. If you **deflate** that dominant axis and look
-at what's underneath, the geometry→function coupling *jumps* 50× (z ≈ 483
-against the permutation null). Maybe the real local structure was hiding beneath
-the shared axis all along.
-
-This was the only claim nobody had tested against the spectrum null. So I tested
-it. Take the deflated signal, and compare it to a spectrum-matched random map put
-through the *same* deflation:
-
-| deflate rank | real R² | null R² | z |
-|-------------:|--------:|--------:|---:|
-| 0 | 0.0027 | 0.0024 | 0.3 |
-| 1 | 0.133 | 0.213 | **−8.4** |
-| 3 | 0.202 | 0.292 | **−5.6** |
-
-Deflation *does* multiply the signal — but the random map's signal grows even
-more. Real is *below* null. And the mechanism is clear once you see it: removing
-the one dominant axis leaves a nearly **isotropic** metric, so Sfn ≈ Sgeo
-trivially — geometry "predicts" function only because it's predicting itself, and
-a random map is even more isotropic. The last door was the same artifact in a new
-costume.
-
-## The verified conclusion
-
-Under geometry→function proxies that are linear in the on-distribution regime —
-which covers both the standard direct-logit proxy and small-perturbation causal
-injection — **GPT-2-small SAE decoder geometry shows no network-specific local
-functional structure.** Every "local halo" I found, across three rounds, was a
-spectrum/isotropy artifact of comparing two quadratic forms. The local-vs-global
-question is *not* answered "local" by these methods; the apparent locality is
-measurement, not signal.
-
-I did not solve Sharkey et al.'s open problem. But I think I showed something
-useful: a whole family of popular measurement strategies **can't** answer it, and
-exactly why.
+~98% of the variance in the causal-effect matrix lives in one shared "logit-shift"
+axis. **Deflate** it, and the geometry→function coupling jumps 50× against the
+permutation null. Maybe the real structure was hiding underneath. But scored
+against a spectrum-matched null put through the *same* deflation, the real signal
+lands **below** null (z = −8.4 at deflate-1). The mechanism: removing the dominant
+axis leaves a near-**isotropic** metric, so Sfn ≈ Sgeo trivially — geometry
+"predicts" function only because it's predicting itself, and a random map is even
+more isotropic. Same artifact, new costume.
 
 ## The reusable lesson
 
-**Never headline a geometry→function statistic without a spectrum-matched null.**
-Report `real − null`, where the null is a random map with the *same singular
-spectrum* as your real one. Raw R², and the intuitive label-permutation null, are
-both beaten by any fixed linear map — so a positive result against either can be
-pure tautology. If your function proxy is linear in the feature direction (and
-many are), its verdict is largely *forced* by its spectrum, and you're measuring
-your proxy, not your network.
+**Never headline a geometry→function statistic without a spectrum-matched null** —
+a random map with the *same singular spectrum*. Raw R² and the intuitive
+label-permutation null are both beaten by any fixed linear map, so a positive
+against either can be pure tautology. If your function proxy is linear in the
+feature direction — and many are — its verdict is *forced* by its spectrum. You're
+measuring your proxy, not your network.
 
-## What's still genuinely open
+## Round 4: the honest frontier — genuinely nonlinear, on-distribution
 
-Everything I tested lives in the linear regime. The honest frontier is a proxy
-that is *genuinely* nonlinear, *on-distribution*, and downstream-aware — for
-example, run the SAE encoder over a real corpus, find where each feature actually
-fires, and measure its true effect on model outputs, then score *that* against a
-matched null. Current evidence (the signal is flat-then-decreasing as you push
-the injection harder) predicts it won't reveal structure either — but it's
-untested, and it's where a real positive result would have to come from.
+Everything so far was linear-in-the-regime. The honest test is a proxy that's
+*genuinely nonlinear and on-distribution*: run the SAE encoder over real text, find
+where each feature actually **fires**, ablate its real contribution at those
+positions, and measure the true logit shift. What a feature *does when it's there*.
+
+That effect matrix is, again, **99.5% one shared axis**. So the deflation trap
+recurs — but this time there's a decisive built-in control: the refuted linear
+proxy is a *known* spectrum artifact, so any analysis setting that flags **it** as
+"real" is untrustworthy by construction. Only the un-deflated comparison passes
+that control, and there the real nonlinear coupling sits **below** the null under
+two independent nulls (z ≈ −6 to −7 at layer 8). Across depth it gets
+monotonically *more* negative (layer 4 ≈ −6, layer 11 ≈ −24 to −37); the lone
+ambiguous point is layer 2, which fails the "beat both nulls" bar and is best read
+as the fading tail of embedding geometry. The negative holds — even measuring what
+features actually do when they fire.
+
+### What that 99.5% shared axis actually is
+
+It's worth naming, because it's the whole confound. The dominant axis equals the
+**mean** ablation effect (cos = 1.000; 94% of features load the same sign). It
+promotes GPT-2 glitch tokens — `RandomRedditor`, `rawdownload`, byte and control
+characters — and demotes common punctuation and whitespace. That's the signature
+of a generic **confidence collapse**: ablate *any* feature, the model gets less
+confident and its distribution flattens toward degenerate tokens. It measures how
+much residual mass you deleted, not what the feature means.
+
+Can you remove it at the source instead of via treacherous deflation? I tried two
+principled controls. **Norm-matched ablation** (remove the feature's direction but
+preserve the residual's norm): shared axis unchanged — so it isn't a magnitude
+effect. **Magnitude-matched random-direction control** (subtract an equal-size
+random-direction ablation): the confidence-collapse signature changes, but a *new*
+dominant mode instantly replaces it. And the decoder directions are nearly
+**isotropic** (top-1 SVD energy 2.3%), so the shared *output* axis isn't inherited
+from geometry — GPT-2 itself funnels perturbations along its real feature
+directions into a low-rank response. The confound is **fundamental** to
+ablation-based function measurement. That's why every proxy hit it.
+
+## Round 5: a completely different kind of "function" — co-firing
+
+If *effect* is hopelessly confounded, measure function a different way entirely:
+**co-firing**. Two features are related if they *activate in the same contexts*.
+No ablation, no output perturbation — just the SAE encoder over 8,000 real Pile
+positions. Does decoder geometry predict which features fire together?
+
+No. Coupling R² ≈ 0.003 — essentially zero, and below the null (z ≈ −16) at every
+deflation. And co-firing has its *own* ~99.98% shared axis (a generic
+activity-level mode), so the single-dominant-mode phenomenon is pervasive across
+SAE statistics, not specific to ablation. Whether function is a feature's output
+**effect** or **when it fires**, decoder geometry does not predict it.
+
+## The verified conclusion
+
+Across five proxies spanning three genuinely independent notions of "function" —
+linear direct effect, nonlinear on-distribution effect, and co-firing —
+**GPT-2-small SAE decoder geometry shows no network-specific functional
+structure.** The local-vs-global question is not answered "local" by any of these;
+the only geometric structure is the trivial embedding geometry at the earliest
+layers, gone by layer 4. I didn't solve Sharkey et al.'s open problem, but I
+mapped out a wide family of measurement strategies that **can't** answer it — and
+*why*, down to a mechanism (the model's low-rank response to perturbing its own
+features).
+
+Two things I'd hand to the next person. **A method:** a refuted proxy makes a
+decisive built-in negative control — sharper than synthetic ground-truth worlds,
+which missed the real spectral pathology. **A caution:** SAE feature statistics
+are pervasively rank-one-dominated (~99% shared mode, twice, from unrelated
+causes), so any sub-dominant-structure claim needs the deflation controls, not raw
+cosines.
 
 ## Coda
 
-The thing I keep coming back to is that I found the same false positive **three
-times**, dressed differently each time, and each time it felt real until a random
-matrix with the right eigenvalues did the same thing. The load-bearing part of
-this project wasn't any single metric. It was the null — and the discipline of
-letting an adversary pick it.
+The load-bearing part of this project was never a metric. It was the null — and
+the discipline of letting an adversary pick it. I found the same false positive
+five times, each dressed differently, and each time it felt real until a random
+matrix with the right eigenvalues did exactly the same thing.
+
+The genuinely-open remainder is narrow, and it's where I'm headed next: *cosine*
+geometry says nothing, but does *hierarchical* geometry — containment,
+parent/child structure — predict function where flat similarity doesn't? That's a
+different question, and this whole negative is what motivates asking it.
