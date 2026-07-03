@@ -116,11 +116,77 @@ single-dominant-shared-mode phenomenon is pervasive across SAE feature statistic
 not specific to ablation. So whether function is a feature's output EFFECT or WHEN
 it fires, decoder geometry does not predict it.
 
-The genuinely-open remainder is now narrow: other SAE families/architectures;
-non-cosine or hierarchical geometry measures; and function proxies for the
-sub-dominant (post-shared-axis) structure that come with a validated null (the
-shared axis is pervasive, so any such proxy needs the deflation controls from
-`nlcp_validate.py` / the built-in linear control).
+## The reframe: a narrow, decoder-side positive (adversarially bounded)
+
+A first-principles reframe (`concept_geometry.py`) broke the deadlock — then a
+three-lens adversarial pass (`attack_*.py`, `concept_geometry_generalize.py`)
+narrowed it hard. Both matter.
+
+The reframe: the five negatives all used *global, all-pairs* cosine vs a *scalar*
+similarity, which washes structure out. Instead, inject external information (so
+it can't be a spectrum tautology): for a family the model represents with strong
+low-dimensional geometry — cyclic concepts (months/days, Engels 2024) — select
+each concept's SAE feature by encoder activation (independent of geometry) and ask
+whether the decoder directions recover the known order. Raw result: months recover
+the calendar circle at corr +0.78–0.83, z~+6, perm_p=0.000 across layers 4/6/8/10.
+
+**But adversarial testing bounds it on three orthogonal axes:**
+1. **Inheritance, not discovery.** The MODEL residual already recovers the circle
+   everywhere; the decoder only *matches* it (mean delta +0.04, paired t=1.39
+   n.s., sign-flips negative for days). cos(decoder, residual)=0.54,
+   decoder-vs-model matrix agreement 0.91 — the decoder geometry *is* the model
+   geometry. It reflects, it doesn't add. (One non-trivial bit: the *encoder*
+   recovers nothing, so the reflection is reconstruction/decoder-side, not a
+   symmetric enc=dec=model triviality.)
+2. **Conditional, not general.** Holds only where the model already has strong
+   low-D structure (months, days, and — new — the linear family "numbers"). For
+   arbitrary categories the SAE decoder geometry is *decoupled* from the model's
+   (fruits r≈0 at all layers; animals fails 3/4). And the target test alone
+   false-positives: for planets the model has no distance geometry, yet the SAE
+   "recovers" a hand-picked linear order — so a MODEL positive-control gate is
+   mandatory.
+3. **Modest and fragile.** ~0.52 of the +0.83 is a free geometric-shape ceiling
+   (best circular ordering of spectrum-matched random directions); honest excess
+   over shape is z~+3–4 (months), z~+1.7 borderline (days). Carried entirely by
+   the single top-detector feature per concept — the 2nd-most-selective gives ~0.
+
+**Honest resolution of Sharkey 2.1.2c: NOT "local geometry is function-reflecting."**
+It's: *SAE decoder geometry reflects function exactly to the extent the model's
+residual stream already does* — a scoped, quantified, decoder-side corollary of
+the linear-representation hypothesis, positive locally where the model has strong
+structure, negative globally, decoupled where the model has no structure. The
+load-bearing object throughout is the MODEL's geometry; the SAE neither reveals
+function the model lacks nor globally exposes function the model has.
+
+## The strongest result: interactions have a real-but-minor local component
+
+First-principles reframe (Five Whys): every proxy above measured a feature's
+ISOLATED effect, but the network uses features in COMBINATION — the nonlinearity
+IS the interaction, and Sharkey's fork is about relational structure. So measure
+the relation directly (`feature_interaction.py`): the MLP's second-order coupling
+of feature pairs on real residuals, and ask whether geometrically-close features
+interact more (local) or not (global).
+
+**This is the ONLY positive that clears the spectrum-matched-random control** that
+refuted every flat-geometry result. Adversarially verified (3 skeptics + judge):
+(a) real & network-specific — close features interact more; random directions
+through the same MLP give ~0 in all 12 layer×seed configs and every control. (b)
+not a duplicate/self-curvature artifact (near-dup pairs ~0; excluding all cos>0.3
+barely moves it; signal lives in distinct cos~0.1–0.5 features). (c) robust to
+control choice (double-centering, Mantel, partial correlation agree). BUT narrowed:
+honest magnitude is ~+0.15–0.17 (rank-robust Spearman), not the Pearson +0.30
+(tail-inflated ~2×); and it is operationally MINOR — geometry adds only ~2%
+incremental R² over a global per-feature "interaction-propensity" scalar, which
+out-predicts geometric neighbors ~2:1 at recovering a feature's true interaction
+partners.
+
+**Final answer to Sharkey 2.1.2c:** SAE/feature geometry reflects the network's
+functional structure only weakly and **mostly globally, with a small, real,
+network-specific local component that appears in interactions but not flat
+geometry.** The dominant organizing signal is a global per-feature propensity;
+geometry is not a reliable route to which features a given feature interacts with.
+Real, controlled, quantified — but global-sufficient, local-insufficient, not a
+foundation for bag-of-features *local* interpretability.
 
 ## Reproduce
 
