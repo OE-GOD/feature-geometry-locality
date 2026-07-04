@@ -91,3 +91,19 @@ variance remains; split-half may collapse toward 0 (=> INDETERMINATE-instrument)
   (causal_proxy autopsy, FINDINGS.md).
 - Exploratory (non-confirmatory, reported separately if run): replicate at L=4;
   binary co-firing variant.
+
+## AMENDMENT 1 (registered 2026-07-04, after run 1, before run 2)
+
+Run 1 (full, C=32, N=8) verdict: INDETERMINATE (instrument) — G1 split-half
++0.292 vs frozen >0.3 (the pre-flagged most-likely-to-break row). Substantive
+inputs landed in the indeterminate band regardless: z=+3.73, z_partial=+2.32,
+real rho +0.0110 (> all 8 nulls), partial +0.0034 (tied with best null).
+Run 1 is reported as instrument-failed; it carries no confirmatory weight.
+
+Run 2 (confirmatory): identical in every respect except C: 32 -> 128 contexts
+(Spearman-Brown: stability 0.29 at C=32 predicts ~0.55-0.62 at C=128) and
+N: 8 -> 12 nulls (tighter null sd). Gates, statistics, decision bins unchanged.
+Prediction (frozen now): G1 0.45..0.65 PASS; if run-1 signal was noise, z falls
+toward 0; if real, z in +3..+7 and z_partial in +1..+4 — REFUTE still most
+likely (rho ~0.01 is no map even if nonzero). CONFIRM 10% / REFUTE 60% /
+INDETERMINATE 30%.
