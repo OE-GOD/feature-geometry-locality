@@ -247,6 +247,40 @@ the network. Honest edge: the ladder uses top-k SAEs (a third recipe) and MLP-si
 SAEs at 410m (residual only available at 70m/160m); the negative holds identically
 across all of them.
 
+## The model's-own-ruler test (preregistered) — the last escape hatch, closed-ish
+
+The one remaining objection to the universal negative: raw cosine is the wrong
+metric — the model reads directions through its downstream weights, so measure
+distance in the model's warped coordinates. Tested under full pre-registration
+(PREREG_ruler.md; registration commit 3db734f, amendment fd928ca — hypothesis,
+gates, decision bins, and predictions frozen before data).
+
+Design: ruler = the model's actual response (inject alpha*W_dec[i] at L8 last
+position on real text, propagate through blocks 8-11 via a K/V-cached exact
+harness — alpha=0 reproduces the clean forward to 1.5e-05). Function = co-firing
+on disjoint text. Null = random orthogonal ROTATION of the decoder set before
+injection: preserves every pairwise cosine, destroys only feature-to-weight
+alignment — the exact Occam blade for "the model's warping carries function."
+
+| run | contexts | G1 split-half | z | z_partial (beyond cosine) | verdict |
+|---|---|---|---|---|---|
+| 1 | 32 | 0.292 FAIL | +3.73 | +2.32 | INDETERMINATE (instrument) |
+| 2 | 128 | 0.258 FAIL | +1.44 | +0.89 | INDETERMINATE (instrument) |
+
+The instrument failure is the finding. Quadrupling the data made stability
+WORSE, not better (Spearman-Brown predicted ~0.55 if the noise were sampling
+noise), and the top-1 energy of the deflated responses rose 0.34 -> 0.78: what
+survives shared-mode removal is a per-feature scalar times a shared pattern —
+the same rank-1 structure every other proxy found — plus residue too unstable
+to measure. Meanwhile the substantive signal regressed toward the null with the
+better-fed instrument (z +3.73 -> +1.44), the pre-registered noise branch.
+
+Honest status: formally INDETERMINATE, not REFUTE — the gates block a clean kill.
+But the reason the gates fail is itself the answer: the model's own ruler barely
+distinguishes features. You cannot rescue feature geometry by measuring it in the
+model's coordinates, because in the model's coordinates the features are still
+~interchangeable. Effect-size ceiling even if the whisper were real: rho ~ 0.011.
+
 ## Reproduce
 
 ```
