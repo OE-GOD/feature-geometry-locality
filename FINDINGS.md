@@ -188,9 +188,72 @@ geometry is not a reliable route to which features a given feature interacts wit
 Real, controlled, quantified — but global-sufficient, local-insufficient, not a
 foundation for bag-of-features *local* interpretability.
 
+## The scale test: does the negative hold at 17× the parameters? (critical-mass probe)
+
+Everything above is GPT-2-small (117M). The sharpest doubt about it: maybe rich
+functional geometry only *emerges* past a scale threshold (a "critical mass") and
+117M is below it. Tested by porting the battery to **Gemma-2-2b (2B)** with
+**Gemma Scope** SAEs (JumpReLU) — a ~17× jump. Matched K=400, mid-depth layer,
+spectrum/rank-matched nulls throughout.
+
+Two rungs first (GPT-2 vs Gemma), then a clean same-family ladder to remove the
+family confound.
+
+**Rung comparison (GPT-2 vs Gemma, matched K=400):**
+
+| metric | GPT-2 (117M) | Gemma-2 (2B) | reading |
+|---|---|---|---|
+| decoder isotropy (top-1 SVD) | 0.025 | 0.008 | geometry *thinner*, not richer |
+| co-firing shared axis (binary, mag-free) | 69% | 7% | recipe-dependent — see ladder |
+| geometry→co-firing coupling z | −16 | −7 (−31 deflated) | **below null** at both |
+
+**Same-family ladder (Pythia, one architecture, one top-k SAE recipe, scale is the
+only variable — the confound-killer):**
+
+| Pythia rung | binary shared axis | geometry→co-firing z (deflate 0) |
+|---|---|---|
+| 70m | 0.047 | −55 |
+| 160m | 0.037 | −37 |
+| 410m | 0.078 | −40 |
+
+Two conclusions:
+
+1. **"Geometry does not predict genuine function" is UNIVERSAL, not a small-model
+   artifact.** Decoder geometry predicts co-firing *worse* than a rank-matched null
+   at every point tested — GPT-2 (117M), Gemma-2 (2B), and the whole Pythia ladder
+   (70m/160m/410m) — at every deflation level. Scale-invariant *and* family-invariant.
+   The decoder got *more* isotropic with scale, not more structured. The
+   critical-mass hypothesis (rich functional geometry emerging past a threshold) is
+   **decisively unsupported**.
+
+2. **The "~99% feature-agnostic shared mode" is an SAE-recipe artifact, not a
+   model/scale property.** Its size is set by the SAE's sparsity mechanism, not by
+   the network: ReLU (GPT-2 jbloom) 69%, JumpReLU (Gemma Scope) 7%, top-k (Pythia)
+   ~5%. In the controlled Pythia ladder it is **flat across a 6× scale range**
+   (0.047 → 0.037 → 0.078), so it is not a scale phenomenon at all. This corrects
+   *two* earlier readings: (a) my first Gemma read, "the shared mode shrinks at
+   scale," was confounded by recipe — the ladder refutes it; (b) post 3's mechanism,
+   "the map is blank *because* the response is ~99% feature-agnostic," was reporting
+   an artifact of the jbloom ReLU SAE, and is falsified independently by Gemma, where
+   the co-firing response is largely feature-*specific* (7% shared) yet geometry
+   *still* fails to organize it. Feature-agnosticism is neither universal nor the
+   cause of the blank map.
+
+**Net:** the family confound is resolved by the ladder. The only fact that survives
+across recipe, scale, and family is the negative — decoder geometry is not a map of
+function. Everything I previously offered as a *mechanism* for the blankness
+(feature-agnostic response, shrink-at-scale) was measuring the SAE instrument, not
+the network. Honest edge: the ladder uses top-k SAEs (a third recipe) and MLP-site
+SAEs at 410m (residual only available at 70m/160m); the negative holds identically
+across all of them.
+
 ## Reproduce
 
 ```
+python3 gemma_scale.py                               # scale: isotropy + direct-logit shared mode + spectrum null
+python3 robustness_scale.py                          # scale: layer sweep + shared-mode deflation
+python3 gemma_cofire.py both                         # scale: activation co-firing shared axis + geometry z
+python3 pythia_ladder.py                             # scale: clean same-family ladder (Pythia 70m/160m/410m)
 python3 validate.py                                  # metric sanity on synthetic worlds
 python3 run_layer.py --hook blocks.8.hook_resid_pre  # direct proxy (naive)
 python3 null_control.py --hook blocks.8.hook_resid_pre  # spectrum null -> negative delta
