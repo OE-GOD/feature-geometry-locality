@@ -288,6 +288,7 @@ python3 gemma_scale.py                               # scale: isotropy + direct-
 python3 robustness_scale.py                          # scale: layer sweep + shared-mode deflation
 python3 gemma_cofire.py both                         # scale: activation co-firing shared axis + geometry z
 python3 pythia_ladder.py                             # scale: clean same-family ladder (Pythia 70m/160m/410m)
+python3 ruler_test.py --smoke                        # preregistered model's-own-ruler test (see PREREG_ruler.md)
 python3 validate.py                                  # metric sanity on synthetic worlds
 python3 run_layer.py --hook blocks.8.hook_resid_pre  # direct proxy (naive)
 python3 null_control.py --hook blocks.8.hook_resid_pre  # spectrum null -> negative delta
