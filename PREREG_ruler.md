@@ -107,3 +107,26 @@ Prediction (frozen now): G1 0.45..0.65 PASS; if run-1 signal was noise, z falls
 toward 0; if real, z in +3..+7 and z_partial in +1..+4 — REFUTE still most
 likely (rho ~0.01 is no map even if nonzero). CONFIRM 10% / REFUTE 60% /
 INDETERMINATE 30%.
+
+## RUN 2 RESULT (recorded 2026-07-04; confirmatory run of Amendment 1)
+
+G0 PASS (1.5e-05). G1 FAIL: +0.258 (predicted 0.45..0.65 if run-1 instability
+was sampling noise — it went DOWN with 4x contexts, so the instability is NOT
+sampling noise: the deflated response simply lacks stable feature-specific
+structure). G2 FAIL: +0.163. Deflated-response top-1 SVD energy ROSE 0.34 -> 0.78
+(a per-feature-scalar x shared-pattern rank-1 axis concentrates with more data —
+the project's recurring structure, rediscovered by this instrument too).
+z = +1.44, z_partial = +0.89 (real rho +0.0108): the run-1 whisper regressed
+toward the null with a better-fed instrument — the registered noise branch.
+
+FORMAL VERDICT (frozen rule): INDETERMINATE — instrument gate failure, run 2.
+
+Registered interpretation: the instrument failure is itself the informative
+result. The model's downstream response to feature directions contains almost no
+stable feature-specific component once the feature-agnostic part is removed;
+what little varies is dominated by a per-feature scalar times a shared pattern.
+"Geometry in the model's own coordinates" cannot be stabilized into a functional
+map because the model's own ruler barely distinguishes features — convergent,
+via a preregistered instrument, with every prior result in this project. No
+further instrument amendments will be registered: the failure mode is structural
+(more data made it worse), not statistical.
