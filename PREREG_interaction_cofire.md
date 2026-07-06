@@ -93,3 +93,16 @@ decoys never occur in real residuals, so co-firing pairs could score high
 interactions via joint presence in h0 rather than weight-coupling. Control:
 recompute I at base points where NONE of the 200 sampled features fire. Signal
 survives -> weight-coupling; vanishes -> occupancy echo (different, weaker claim).
+
+## OCCUPANCY CONTROL RESULT (2026-07-05, exploratory as registered above)
+
+At base points where NONE of the 200 features fires (3404/7968 positions
+qualified): rho = +0.1114, partial = +0.1061 (vs +0.1130/+0.1076 at ordinary
+base points) — unchanged. Nulls at the same quiet points: +0.012 avg.
+z@quiet = +26.5, z_partial@quiet = +25.9.
+
+READING: occupancy echo RULED OUT. The interaction->co-firing coupling is a
+property of the MLP WEIGHTS' second-order response to the feature directions,
+present even at residuals where the features are absent. The CONFIRM's strong
+interpretation stands: the network's weights encode which feature pairs are
+co-functional.
