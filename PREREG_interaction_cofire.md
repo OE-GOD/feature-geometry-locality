@@ -75,3 +75,21 @@ is heavy — hence REFUTE-lean predictions despite the healthy instrument.
 - Features firing <10 on the co-firing corpus: dropped, surviving K reported.
 - If any null run crashes: rerun same seed once; if it crashes again, replace
   with next seed (9, 10, ...) and report.
+
+## RESULT (recorded 2026-07-05; confirmatory run, frozen rule)
+
+G0 PASS (0.0e+00). G1 PASS (+0.948; predicted 0.85-0.97 — held). K=200/200 fired,
+19,900 pairs. rho = +0.1130, rho_partial = +0.1076. Nulls (8 rotations):
++0.0121 ± 0.0030 / +0.0106 ± 0.0030. z = +33.5, z_partial = +32.4.
+
+VERDICT (frozen rule): **CONFIRM H1** — the first confirm of the project.
+
+Prediction scorecard: G1 held; rho and z came in ABOVE my frozen ranges
+(predicted rho +0.00..+0.06, z +0..+4) — wrong in the pessimistic direction.
+
+Registered next step (exploratory control, before any interpretation is
+published): the OCCUPANCY channel. Base points are real residuals; rotated
+decoys never occur in real residuals, so co-firing pairs could score high
+interactions via joint presence in h0 rather than weight-coupling. Control:
+recompute I at base points where NONE of the 200 sampled features fire. Signal
+survives -> weight-coupling; vanishes -> occupancy echo (different, weaker claim).
