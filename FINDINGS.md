@@ -281,6 +281,37 @@ distinguishes features. You cannot rescue feature geometry by measuring it in th
 model's coordinates, because in the model's coordinates the features are still
 ~interchangeable. Effect-size ceiling even if the whisper were real: rho ~ 0.011.
 
+## THE POSITIVE (preregistered, controlled): interactions predict co-firing
+
+After every pairwise-geometry claim died, the last untested organizing principle
+was combination structure. Instrument pilot first (`interaction_stability.py`,
+lesson of the ruler test): the interaction matrix
+I(i,j) = ||mlp8(h0+di+dj) − mlp8(h0+di) − mlp8(h0+dj) + mlp8(h0)|| is split-half
+stable at +0.95 BEYOND its rank-1 scalar axis — a real coin, unlike the ruler's
+0.26. Then the confirmatory question — never previously computed anywhere in the
+project — was preregistered (PREREG_interaction_cofire.md, frozen at 2abd7a0,
+fresh seed-7 features disjoint from the pilot): does I with its scalar axis
+removed predict CO-FIRING, beyond rotation nulls and beyond raw cosine?
+
+**CONFIRM — the project's first positive.** rho = +0.113 (partial on cosine:
++0.108); 8 rotation nulls: +0.012 ± 0.003. z = +33.5, z_partial = +32.4. Gates:
+determinism exact; split-half +0.948. Prediction scorecard: gate range held; rho
+and z landed ABOVE my frozen (pessimistic) ranges.
+
+**Occupancy control (the boring channel, ruled out).** Rotated decoys never occur
+in real residuals, so the confirm could have been "co-firing pairs are jointly
+present in the base points." Recomputed at base points where NONE of the 200
+features fires: rho = +0.111, z = +26.5 — unchanged. The coupling is borne by the
+MLP WEIGHTS' second-order response, present where the features are absent.
+
+Calibrated claim: GPT-2 block-8 MLP weights encode which feature pairs are
+co-functional — readable in response curvature, invisible in decoder geometry
+(raw cosine explains none of it; the partial barely moves). Effect size honesty:
+rho 0.113 ≈ 1.3% of pair rank-variance — a genuine organizational signal, ten
+times its matched null, not yet a usable map. Scope: one model, one layer, K=200;
+depth/scale/family replication and graph structure (communities, hierarchy — the
+SOAR I-6 question) are the registered next steps.
+
 ## Reproduce
 
 ```
