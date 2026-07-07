@@ -72,3 +72,26 @@ least-tested link.
 
 As in PREREG_interaction_cofire.md (fires<10 dropped; crashed null reruns once,
 then next seed with report).
+
+## RESULT (recorded 2026-07-06; confirmatory run, frozen rules)
+
+Third disjoint sample (seed 13). Gates: G0 exact; G1 +0.962; G2 +0.626 (the
+flagged break-row PASSED — communities are stable on fresh features too).
+
+H1a (replication): rho=+0.0785, partial=+0.0721; nulls +0.009 avg.
+  z=+19.99, z_partial=+18.60 -> **CONFIRM**. The pairwise interaction->co-firing
+  result now stands on TWO independent samples (z=+33.5 and +20.0).
+
+H1b (communities): interaction-community vs co-firing-community ARI = -0.0117;
+  8 rotation nulls +0.0029 ± 0.0103 -> z_ARI = -1.42 -> **REFUTE**.
+  Communities are REAL and STABLE (G2 +0.63) but do NOT align with functional
+  communities. Pilot's +0.04 alignment (informal z +8.6) did NOT generalize --
+  it was table-specific noise; the fresh-sample prereg caught it. Frozen
+  prediction (55% confirm) was WRONG; rule reads REFUTE with no wiggle.
+
+INTERPRETATION: the pairwise functional signal (~1.3% variance) is real but too
+faint to aggregate into functional modules at the mesoscale. Interaction
+communities form around the dominant (non-functional) structure. "Fabric, not
+modules": genuine thread-by-thread functional information that does not knot into
+functional groups at k=6. This BOUNDS the SOAR I-6 hierarchy question -- naive
+community detection on the interaction graph will not recover functional hierarchy.
