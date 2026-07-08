@@ -312,6 +312,35 @@ times its matched null, not yet a usable map. Scope: one model, one layer, K=200
 depth/scale/family replication and graph structure (communities, hierarchy — the
 SOAR I-6 question) are the registered next steps.
 
+## The shard signature (preregistered v2, post-redteam): interaction-selected
+## groups share subspaces
+
+Motivated by Goodfire's Block-Sparse Featurizers (arXiv 2606.25234, incl.
+Sharkey): concepts as 2-4d subspaces that SAEs shatter into single-direction
+shards. Design v1 was KILLED by a 6-lens adversarial fleet (6 fatal flaws:
+pre-satisfied rotation null, unconstructible magnitude-matched null, backwards
+within-sample search, plane/cone-blind statistic, circular months gates — see
+DESIGN_shard_test.md). v2 was derived from first principles; a Codex-implemented
+pilot then caught two more artifacts (months linkage is cosine-confounded ->
+demoted to gate; contrast bottom-arm is a junk-clump -> discarded), and the
+corrected statistic was frozen (PREREG_shard.md, 9a5ec15) before fresh data.
+
+**CONFIRM.** On 24 fresh seeds against the full 24,570-feature dictionary: at
+MATCHED |cos|-to-seed, the top-8 interaction partners are ~4x more mutually
+aligned than random same-bin draws — Delta_top = +0.112 (predicted +0.05..+0.16),
+within-bin permutation z = **+84**, all gates pass (split-half 0.60; months
+pipeline gate 12/12 at median rank 8-10 of 24,570). Pilot: pp(top8)=0.170 vs
+random=0.037 at near-zero seed-cos.
+
+Calibrated reading (pre-committed bounds): interaction selects MUTUALLY
+consistent directions — SAE features organize into shared low-dimensional
+subspaces, a shard-compatible structure that marginal pairwise cosine cannot
+see (it is a higher-order arrangement pattern, recovered through function).
+This REFINES the series' negative: "geometry is not a map" holds for pairwise
+cosine marginals; interaction-selected subspace structure is real, replicated
+mechanics across pilot and fresh seeds. NOT licensed: "concepts are 2-4d
+manifolds" (within-block coordinates untested), typicality beyond GPT-2 L8.
+
 ## Reproduce
 
 ```
