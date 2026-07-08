@@ -134,3 +134,16 @@ PILOT (exploratory, throwaway seeds) decides before freezing: feasibility of
 seed-vs-all interaction on CPU, partner-list stability, months linkage, honest
 prediction bins for Delta. Implementation delegated to Codex
 (Fable 5 orchestrates/reviews). Prereg only after pilot.
+
+## PILOT RESULTS (2026-07-08, Codex-implemented, orchestrator-reviewed)
+
+Feasibility 12s/base-point; stability mean Jaccard 0.63 (bp=16). Months linkage:
+mates at median Itilde-rank 8-14 of 24,570 — BUT diagnostic shows raw |cos| alone
+gives median 13 (interaction only nudges to ~9): linkage is cosine-confounded ->
+demoted to pipeline gate. Conditional contrast came out NEGATIVE (z=-21/-78);
+decomposition: bottom arm is a recurring junk-clump (pp 0.223, cross-seed overlap
+15%) — artifact; TOP arm carries the signal: pp(top8)=0.170 vs random8=0.037
+(4.6x) at matched near-zero seed-cos, per-seed specific (overlap 1%). Corrected
+confirmatory statistic: Delta_top = pp(top8 by Itilde) - E[pp(random8 within
+bin)], permutation z. All statistic surgery decided BEFORE the confirmatory
+prereg; pilot seeds burned.
