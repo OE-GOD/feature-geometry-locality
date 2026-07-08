@@ -67,3 +67,19 @@ seed-cosine — a subspace/shard-compatible organization." It does NOT license
 "concepts are 2-4d manifolds" (no within-block coordinate tested) nor any claim
 about typicality across layers/models. REFUTE bounds the BSF prior in language
 at this layer/SAE. Bottom-arm phenomena are exploratory only.
+
+## RESULT (recorded 2026-07-08; confirmatory run, frozen rule)
+
+Gates: G0 exact (0.0e+00); G1 mean Jaccard 0.6034 (min 0.379) PASS; G2 months
+12/12 at median rank 8-10 of 24,570 PASS. Delta_top = +0.1125 (predicted
++0.05..+0.16 — held, mid-range). Null +0.00007 ± 0.0013 -> z = +84.0 (predicted
++8..+40 — above range; pessimistic-direction miss again).
+
+VERDICT (frozen rule): **CONFIRM H1.**
+
+Per the pre-committed interpretation bounds: at matched |cos|-to-seed, the
+features that interact most with a seed are ~4x more mutually aligned than
+chance — interaction selects mutually-consistent directions: a subspace/
+shard-compatible organization of SAE features, invisible to marginal pairwise
+cosine, recovered through function. Does NOT license "concepts are 2-4d
+manifolds" (no within-block coordinate tested) nor typicality beyond L8/GPT-2.
