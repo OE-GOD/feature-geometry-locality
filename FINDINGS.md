@@ -341,6 +341,34 @@ cosine marginals; interaction-selected subspace structure is real, replicated
 mechanics across pilot and fresh seeds. NOT licensed: "concepts are 2-4d
 manifolds" (within-block coordinates untested), typicality beyond GPT-2 L8.
 
+## The coordinate test (preregistered): within-subspace positions are
+## functionally real — for months; not for days
+
+The BSF core claim our shard confirm did not touch: a concept subspace has a
+meaningful INTERNAL coordinate. Operationalization: a coordinate is
+functionally real iff co-processing (interaction) is organized by it.
+Zero-compute pilot on saved shard data found it for months (interaction vs
+circular calendar distance: Spearman -0.685, label-perm z -5.8; circulant
+first-harmonic z +6.7 — Goodfire's curve-detector Fourier signature, in a
+language model, through function). PREREG_coordinate.md froze the confirmatory:
+months on FRESH base points + days-of-week as an independent family.
+
+Result: **months CONFIRM** (T1 -0.617, z -5.9; T2 z +5.9; split-half 0.97;
+perm-p at the 1e-4 floor) — replicated. **days REFUTE** after Amendment 1
+(the original selection assigned one feature to both Wednesday and Thursday —
+objective defect, pre-flagged row; with 7 distinct features the signal
+vanishes: T1 -0.18 n.s.). FINAL: **PARTIAL**.
+
+Calibrated meaning: within-subspace coordinates CAN be functionally
+load-bearing — the months circle is an existence proof that position on an SAE
+feature manifold organizes the model's pairwise computation. But it is not
+automatic (days fails at this layer/SAE), so the strong "concepts are manifolds
+with meaningful coordinates" claim holds for at least one family and fails or
+exceeds instrument strength for another. Existence: yes. Typicality: open.
+Honest scope: within a circle, coordinate and cosine are geometrically
+identified — the claim is function-follows-manifold-structure, no
+"beyond cosine" decomposition attempted.
+
 ## Reproduce
 
 ```
