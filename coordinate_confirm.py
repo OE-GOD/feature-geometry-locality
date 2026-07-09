@@ -69,13 +69,25 @@ def family_features(name, layer, W_dec, W_enc, b_enc, b_dec, log_sp, tok, model)
             0.0,
         )
     alive = log_sp > DEAD_LOG_SPARSITY
-    sel = []
-    for m in range(len(words)):
-        others = A[np.arange(len(words)) != m].mean(0)
-        score = A[m] - others
-        score[~alive] = -np.inf
-        sel.append(int(np.argmax(score)))
-    return words, np.array(sel, dtype=np.int64)
+    # AMENDMENT 1 (PREREG_coordinate.md): greedy DISTINCT assignment — argmax
+    # per word permits duplicates (days: Wednesday==Thursday==9727). Iteratively
+    # take the (word, feature) pair with the highest selectivity among
+    # unassigned words and unused features. Months' argmax set is already
+    # distinct, so its selection is unchanged by this rule.
+    n = len(words)
+    score = np.empty((n, A.shape[1]), dtype=np.float64)
+    for m in range(n):
+        others = A[np.arange(n) != m].mean(0)
+        score[m] = A[m] - others
+        score[m, ~alive] = -np.inf
+    sel = np.full(n, -1, dtype=np.int64)
+    S = score.copy()
+    for _ in range(n):
+        m, f = np.unravel_index(np.argmax(S), S.shape)
+        sel[m] = f
+        S[m, :] = -np.inf
+        S[:, f] = -np.inf
+    return words, sel
 
 
 def circular_distances(n):
@@ -283,6 +295,7 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--bp", type=int, default=16)
     ap.add_argument("--perm", type=int, default=10000)
+    ap.add_argument("--families", type=str, default="months,days")
     args = ap.parse_args()
     if args.smoke:
         args.bp = 2
@@ -291,7 +304,7 @@ def main():
     t0 = time.monotonic()
     W_dec, W_enc, b_enc, b_dec, log_sp = fetch_sae(HOOK)
     tok, model = load_gpt2()
-    family_names = ["months"] if args.smoke else ["months", "days"]
+    family_names = ["months"] if args.smoke else args.families.split(",")
     results = {}
     print(f"setup layer={LAYER} alpha={ALPHA} hook={HOOK}", flush=True)
     for name in family_names:
