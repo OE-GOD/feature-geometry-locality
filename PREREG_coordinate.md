@@ -72,3 +72,28 @@ organizes the model's pairwise co-processing — shard subspaces are manifolds
 with functionally real positions, not unstructured clumps." NOT licensed:
 typicality across arbitrary (non-cyclic, discovered) subspaces; any behavioral/
 steering claim; "beyond cosine" (see scope note).
+
+## RESULT (2026-07-09; confirmatory run, frozen rules)
+
+MONTHS (fresh base points): G0/G1 pass (split-half +0.967). T1 = -0.617,
+z1 = -5.93 (perm-p 1e-4 floor); T2 = +0.569, z2 = +5.85 (floor). **CONFIRM** —
+the pilot replicated; the calendar coordinate organizes co-processing.
+DAYS: G0/G1 pass (split-half +0.932) BUT the feature selection assigned the
+SAME feature (9727) to Wednesday AND Thursday — the family had 6 distinct nodes,
+not 7 (objective instrument defect, visible in the printed mapping; this was the
+pre-flagged most-likely-to-break row). T1 = -0.486, z1 = -2.55 (correct
+direction, p=.0044, below the frozen |z|>=3 bar); T2 z2 = +0.99 n.s.
+**INDETERMINATE.** OVERALL (frozen rule): **PARTIAL**.
+
+## AMENDMENT 1 (registered 2026-07-09, before any rerun)
+
+Defect: family_features argmax-per-word permits duplicate assignments. Fix
+(mechanical, outcome-independent): greedy distinct assignment — iteratively pick
+the (word, feature) pair with the highest selectivity among unassigned words and
+unused features. Months selection is unchanged by this fix (its 12 argmax
+features are already distinct); DAYS is rerun ONCE with distinct selection,
+same frozen statistics/thresholds/nulls, fresh rng-31 base points as before.
+Pre-commitment: ONE rerun only; if days stays below threshold with 7 distinct
+features, the verdict stands as the honest boundary (PARTIAL: months-specific
+until another family is found). Prediction: days CONFIRM 55% / INDETERMINATE
+30% / REFUTE 15%.
