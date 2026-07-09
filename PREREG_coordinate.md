@@ -97,3 +97,23 @@ Pre-commitment: ONE rerun only; if days stays below threshold with 7 distinct
 features, the verdict stands as the honest boundary (PARTIAL: months-specific
 until another family is found). Prediction: days CONFIRM 55% / INDETERMINATE
 30% / REFUTE 15%.
+
+## AMENDED DAYS RERUN (2026-07-09; one rerun per Amendment 1 — FINAL)
+
+Distinct selection: Wednesday now 3697 (Thursday keeps 9727); 7 distinct nodes.
+Gates pass (split-half +0.975). T1 = -0.183, z1 = -1.59 (n.s.); T2 z2 = -0.18
+(n.s.). Frozen rule: **REFUTE** for days. Note: the original run's stronger
+T1 (-0.49) was partly an artifact of the duplicate-feature collision.
+
+FINAL OVERALL (frozen rule): **PARTIAL** — months CONFIRM (twice: pilot +
+fresh base points), days REFUTE. Interpretation within pre-committed bounds:
+within-subspace coordinates CAN be functionally load-bearing (months is an
+existence proof: position on the circle organizes co-processing, Spearman
+-0.62, circulant z +5.9, replicated), but this is NOT automatic for every
+cyclic family — the days features at L8 do not carry it (whether because the
+model's days-circle is weaker here or because the SAE's day features are less
+cleanly individuated — e.g. the shared "midweek" detector — is not resolved by
+this design). No further reruns per pre-commitment. Reproducibility note: the
+days rerun overwrote coordinate_confirm.npz with days-only arrays; months
+numbers are recorded here and in the run logs, regenerable via
+`python3 coordinate_confirm.py --families months`.
